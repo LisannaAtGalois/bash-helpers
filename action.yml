@@ -4,4 +4,6 @@ runs:
     - run: |
         echo "source ${{ github.action_path }}/helpers.sh" >> ~/.bashrc
         cat ~/.bashrc
+        cat ${{ github.action_path }}/helpers.sh
+        source ${{ github.action_path }}/helpers.sh
       shell: bash
