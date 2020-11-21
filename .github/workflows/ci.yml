@@ -23,6 +23,7 @@ jobs:
       - uses: ./
       - shell: bash
         run: |
+          source ~/helpers.sh
           setup-solvers-github
           echo $PATH
           yices --version

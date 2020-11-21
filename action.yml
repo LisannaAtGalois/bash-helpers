@@ -1,10 +1,5 @@
 runs:
   using: "composite"
   steps:
-    - run: |
-        echo ". ${{ github.action_path }}/helpers.sh" >> ~/.bash_profile
-        echo "echo hello" >> ~/.bash_profile
-        cat ~/.bash_profile
-        cat ${{ github.action_path }}/helpers.sh
-        . ${{ github.action_path }}/helpers.sh
+    - run: cp ${{ github.action_path }}/helpers.sh ~/helpers.sh
       shell: bash
