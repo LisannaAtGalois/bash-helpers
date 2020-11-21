@@ -1,5 +1,6 @@
 runs:
   using: "composite"
   steps:
+    - run: echo ${{ github.action_path }}/helpers.sh
     - run: cp ${{ github.action_path }}/helpers.sh ~/helpers.sh
       shell: bash
