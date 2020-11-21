@@ -1,5 +1,7 @@
 runs:
   using: "composite"
   steps:
-    - run: echo "source ${{ github.action_path }}/helpers.sh" >> ~/.bashrc
+    - run: |
+        echo "source ${{ github.action_path }}/helpers.sh" >> ~/.bashrc
+        cat ~/.bashrc
       shell: bash
