@@ -1,6 +1,6 @@
 inputs:
-    name: 'Bash Helpers'
-    description: 'Makes the bash helpers available to bash'
+  name: 'Bash Helpers'
+  description: 'Makes the bash helpers available to bash'
   runs:
     using: "composite"
     steps: 
