@@ -1,8 +1,5 @@
-inputs:
-  name: 'Bash Helpers'
-  description: 'Makes the bash helpers available to bash'
-  runs:
-    using: "composite"
-    steps: 
-      - run: echo "source ${{ github.action_path }}/helpers.sh" >> ~/.bashrc
-        shell: bash
+runs:
+  using: "composite"
+  steps:
+    - run: echo "source ${{ github.action_path }}/helpers.sh" >> ~/.bashrc
+      shell: bash
