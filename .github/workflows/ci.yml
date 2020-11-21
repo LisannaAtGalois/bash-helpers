@@ -26,14 +26,12 @@ jobs:
           source ~/helpers.sh
           setup-solvers-github
           echo $PATH
-        env:
-          Z3_VERSION: "4.8.8"
-          CVC4_VERSION: "4.1.8"
-          YICES_VERSION: "2.6.2"
-      - shell: bash
-        run: |
           yices --version || true
           yices --version | grep -q $YICES_VERSION
           yices-sat --version | grep -q $YICES_VERSION
           yices-smt --version | grep -q $YICES_VERSION
           yices-smt2 --version | grep -q $YICES_VERSION
+        env:
+          Z3_VERSION: "4.8.8"
+          CVC4_VERSION: "4.1.8"
+          YICES_VERSION: "2.6.2"
