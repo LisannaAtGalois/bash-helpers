@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
-setup() {
-    cp -v "$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )" ~/helpers.sh
+setup-helpers() {
+    cp -v $0 ~/helpers.sh
 }
 
 gha-add-path() {
