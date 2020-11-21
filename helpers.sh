@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+setup() {
+    cp "$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )" ~/helpers.sh
+}
+
 gha-add-path() {
     echo $1 >> $GITHUB_PATH
 }
