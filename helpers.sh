@@ -135,6 +135,11 @@ get-yices() { (
     fi
 )}
 
+add-path-github() {
+    echo "$1" >> $GITHUB_PATH
+    export PATH="$PATH:$1"
+}
+
 setup-solvers-github() { (
     set -Eeuo pipefail
     Z3_VERSION=${Z3_VERSION:-""}
@@ -144,9 +149,9 @@ setup-solvers-github() { (
     [ -z "$CVC4_VERSION" ] || get-cvc4 $RUNNER_OS $CVC4_VERSION >/dev/null &
     [ -z "$YICES_VERSION" ] || get-yices $RUNNER_OS $YICES_VERSION >/dev/null &
     wait
-    [ -z "$Z3_VERSION" ] || (echo $(get-z3 $RUNNER_OS $Z3_VERSION)/bin >> $GITHUB_PATH)
-    [ -z "$CVC4_VERSION" ] || (echo $(get-cvc4 $RUNNER_OS $CVC4_VERSION)/bin >> $GITHUB_PATH)
-    [ -z "$YICES_VERSION" ] || (echo $(get-yices $RUNNER_OS $YICES_VERSION)/bin >> $GITHUB_PATH)
+    [ -z "$Z3_VERSION" ] || add-path-github $(get-z3 $RUNNER_OS $Z3_VERSION)/bin
+    [ -z "$CVC4_VERSION" ] || add-path-github $(get-cvc4 $RUNNER_OS $CVC4_VERSION)/bin
+    [ -z "$YICES_VERSION" ] || add-path-github $(get-yices $RUNNER_OS $YICES_VERSION)/bin
 )}
 
 if test "$#" -gt 1; then
