@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 setup() {
-    cp "$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )" ~/helpers.sh
+    cp -v "$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )" ~/helpers.sh
 }
 
 gha-add-path() {
@@ -157,7 +157,7 @@ setup-solvers-github() {
     [ -z "$YICES_VERSION" ] || add-path-github $(get-yices $RUNNER_OS $YICES_VERSION)/bin
 }
 
-if test "$#" -gt 1; then
+if test "$#" -gt 0; then
     COMMAND="$1"
     shift
     "$COMMAND" "$@"
