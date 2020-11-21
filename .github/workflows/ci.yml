@@ -1,0 +1,36 @@
+name: Test bash-helpers
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  solvers-native:
+    strategy:
+      matrix:
+        os:
+          - windows-2019
+          - ubuntu-20.04
+          - ubuntu-18.04
+          - macos-11.0
+          - macos-10.15
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+      - shell: bash
+        run: |
+          setup-solvers-github
+          echo $PATH
+          yices --version
+          yices --version | grep -q $YICES_VERSION
+          yices-sat --version | grep -q $YICES_VERSION
+          yices-smt --version | grep -q $YICES_VERSION
+          yices-smt2 --version | grep -q $YICES_VERSION
+        env:
+          Z3_VERSION: "4.8.8"
+          CVC4_VERSION: "4.1.8"
+          YICES_VERSION: "2.6.2"
