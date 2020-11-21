@@ -2,8 +2,8 @@ runs:
   using: "composite"
   steps:
     - run: |
-        echo "source ${{ github.action_path }}/helpers.sh" >> ~/.bash_profile
+        echo ". ${{ github.action_path }}/helpers.sh" >> ~/.bash_profile
         cat ~/.bash_profile
         cat ${{ github.action_path }}/helpers.sh
-        source ${{ github.action_path }}/helpers.sh
+        . ${{ github.action_path }}/helpers.sh
       shell: bash
