@@ -140,8 +140,7 @@ add-path-github() {
     export PATH="$PATH:$1"
 }
 
-setup-solvers-github() { (
-    set -Eeuo pipefail
+setup-solvers-github() {
     Z3_VERSION=${Z3_VERSION:-""}
     CVC4_VERSION=${CVC4_VERSION:-""}
     YICES_VERSION=${YICES_VERSION:-""}
@@ -152,7 +151,7 @@ setup-solvers-github() { (
     [ -z "$Z3_VERSION" ] || add-path-github $(get-z3 $RUNNER_OS $Z3_VERSION)/bin
     [ -z "$CVC4_VERSION" ] || add-path-github $(get-cvc4 $RUNNER_OS $CVC4_VERSION)/bin
     [ -z "$YICES_VERSION" ] || add-path-github $(get-yices $RUNNER_OS $YICES_VERSION)/bin
-)}
+}
 
 if test "$#" -gt 1; then
     COMMAND="$1"
