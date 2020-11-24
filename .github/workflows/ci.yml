@@ -24,12 +24,15 @@ jobs:
       YICES_VERSION: "2.6.2"
     steps:
       - uses: actions/checkout@v2
+      - uses: mxschmitt/action-tmate@v3
       - shell: bash
         run: |
+          set -Eeuo pipefail
           source ./helpers.sh
           setup-solvers-github
           echo $PATH
-          yices --version || true
+          z3 --version || true
+          cvc4 --version || true
           yices --version | grep -q $YICES_VERSION
           yices-sat --version | grep -q $YICES_VERSION
           yices-smt --version | grep -q $YICES_VERSION
@@ -37,6 +40,8 @@ jobs:
       - shell: bash
         run: |
           echo $PATH
+          z3 --version || true
+          cvc4 --version || true
           yices --version || true
           yices --version | grep -q $YICES_VERSION
           yices-sat --version | grep -q $YICES_VERSION
