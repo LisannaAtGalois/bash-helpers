@@ -18,12 +18,15 @@ jobs:
           - macos-11.0
           - macos-10.15
     runs-on: ${{ matrix.os }}
+    env:
+      Z3_VERSION: "4.8.8"
+      CVC4_VERSION: "4.1.8"
+      YICES_VERSION: "2.6.2"
     steps:
       - uses: actions/checkout@v2
-      - uses: ./
       - shell: bash
         run: |
-          source ~/helpers.sh
+          source ./helpers.sh
           setup-solvers-github
           echo $PATH
           yices --version || true
@@ -31,7 +34,11 @@ jobs:
           yices-sat --version | grep -q $YICES_VERSION
           yices-smt --version | grep -q $YICES_VERSION
           yices-smt2 --version | grep -q $YICES_VERSION
-        env:
-          Z3_VERSION: "4.8.8"
-          CVC4_VERSION: "4.1.8"
-          YICES_VERSION: "2.6.2"
+      - shell: bash
+        run: |
+          echo $PATH
+          yices --version || true
+          yices --version | grep -q $YICES_VERSION
+          yices-sat --version | grep -q $YICES_VERSION
+          yices-smt --version | grep -q $YICES_VERSION
+          yices-smt2 --version | grep -q $YICES_VERSION

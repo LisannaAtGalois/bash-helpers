@@ -1,9 +1,5 @@
 #! /usr/bin/env bash
 
-setup-helpers() {
-    cp -v $0 ~/helpers.sh
-}
-
 gha-add-path() {
     echo $1 >> $GITHUB_PATH
 }
@@ -13,12 +9,51 @@ gha-set-env() {
 }
 
 hash-stdio() {
-    md5sum | awk '{print $1}'
+    if which shasum >/dev/null; then
+        h=shasum
+    else
+        h=md5sum
+    fi
+    echo "using $h" >&2
+    $h | awk '{print $1}'
 }
 
 hash-str() {
     echo "$1" | hash-stdio
 }
+
+# clean-uncached() {
+#     rm -rfv $STORE/uncached.*
+# }
+
+# STORE=${STORE:-~/.bash-helpers-store}
+# setout() {
+#     mkdir -p $STORE
+#     CACHE_KEY=${CACHE_KEY:-""}
+#     out=""
+#     if [ -z "$CACHE_KEY" ]; then
+#         until (set -o noclobber; [ ! -z "$out" ] && >$out.lock) &>/dev/null; do
+#             export out=$(mktemp --tmpdir=$STORE uncached.XXXXXXXXXX)
+#             rm $out
+#             return 1
+#         done
+#     elif [ -e $STORE/$CACHE_KEY.lock ]; then
+#         echo "waiting for $STORE/$CACHE_KEY" >&2
+#         while [ -e $STORE/$CACHE_KEY.lock ]; do sleep 0.1; done
+#         export out=$STORE/$CACHE_KEY
+#         return 0
+#     elif [ -e $STORE/$CACHE_KEY ] && [ ! -e $STORE/$CACHE_KEY.lock ]; then
+#         echo "using cached $STORE/$CACHE_KEY" >&2
+#         export out=$STORE/$CACHE_KEY
+#         return 0
+#     elif (set -o noclobber; >$STORE/$CACHE_KEY.lock) &>/dev/null; then
+#         export out=$STORE/$CACHE_KEY
+#         return 1
+#     else
+#         export out=$STORE/$CACHE_KEY
+#         return 0
+#     fi
+# }
 
 STORE=${STORE:-~/.bash-helpers-store}
 USE_CACHE=true

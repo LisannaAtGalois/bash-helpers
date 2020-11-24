@@ -1,5 +1,13 @@
 runs:
   using: "composite"
   steps:
-    - run: ${{ github.action_path }}/helpers.sh setup-helpers
+    - run: |
+        echo '${{ github.action_path }}'
+        echo '${{ github.action_path }}' >> $GITHUB_PATH
       shell: bash
+      if: runner.os != 'Windows'
+    - run: |
+        echo "${{ github.action_path }}"
+        echo "${{ github.action_path }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      shell: pwsh
+      if: runner.os == 'Windows'
