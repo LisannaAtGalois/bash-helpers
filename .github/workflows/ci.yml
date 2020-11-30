@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
       - uses: mxschmitt/action-tmate@v3
-        if: matrix.os == "macos-10.15"
+        if: matrix.os == 'macos-10.15'
       - name: Setup and test solvers
         shell: bash
         run: |
