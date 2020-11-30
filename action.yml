@@ -4,17 +4,13 @@ runs:
     - run: |
         set -x
         echo '${{ github.action_path }}'
-        ap=$(cygpath -u '${{ github.action_path }}')
-        echo "$ap"
-        BASH_HELPERS="$ap/helpers.sh"
+        if [[ $RUNNER_OS == "Windows" ]]; then
+            ap=$(cygpath -u '${{ github.action_path }}')
+            echo "$ap"
+            BASH_HELPERS="$ap/helpers.sh"
+        else
+            BASH_HELPERS="${{ github.action_path }}/helpers.sh"
+        fi
         echo "$BASH_HELPERS"
         echo "BASH_HELPERS=$BASH_HELPERS" >> $GITHUB_ENV
       shell: bash
-      if: runner.os == 'Windows'
-    - run: |
-        set -x
-        BASH_HELPERS="${{ github.action_path }}/helpers.sh"
-        echo "$BASH_HELPERS"
-        echo "BASH_HELPERS=$BASH_HELPERS" >> $GITHUB_ENV
-      shell: bash
-      if: runner.os != 'Windows'
