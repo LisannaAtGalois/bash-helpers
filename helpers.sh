@@ -31,7 +31,7 @@ fetch-tarball() { (
     curl -o "$tmp/file" -L "$url" >&2
     mkdir "$tmp/unpacked"
     tar xfz "$tmp/file" -C "$tmp/unpacked"
-    if [[ "$(ls -A1 "$tmp/unpacked" | wc -l)" == 1 ]]; then
+    if [[ "$(ls -A1 "$tmp/unpacked" | wc -l | awk '{print $1}')" == 1 ]]; then
         mv "$tmp/unpacked/$(ls -A1 "$tmp/unpacked")" "$out"
     else
         mv "$tmp/unpacked" "$out"
