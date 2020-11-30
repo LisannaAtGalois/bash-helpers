@@ -50,7 +50,7 @@ get-z3() { (
       Windows) file="win.zip" ;;
       *) echo "unrecognized platform $platform" >&2 && return 1 ;;
     esac
-    fetch-zip  https://github.com/Z3Prover/z3/releases/download/z3-$version/z3-$version-x64-$file
+    fetch-zip "$out" "https://github.com/Z3Prover/z3/releases/download/z3-$version/z3-$version-x64-$file"
 ) }
 
 get-cvc4() { (
