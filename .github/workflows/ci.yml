@@ -28,6 +28,7 @@ jobs:
       - shell: bash
         run: |
           set -Eeuo pipefail
+          set -x
           echo "$BASH_HELPERS"
           source "$BASH_HELPERS"
           setup-solvers-github

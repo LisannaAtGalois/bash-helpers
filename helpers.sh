@@ -97,19 +97,19 @@ setup-solvers-github() {
     Z3_VERSION=${Z3_VERSION:-""}
     CVC4_VERSION=${CVC4_VERSION:-""}
     YICES_VERSION=${YICES_VERSION:-""}
-    if [ -z "$Z3_VERSION" ]; then
+    if [ -n "$Z3_VERSION" ]; then
         Z3_ROOT=$(mktemp -d)
         export Z3_ROOT
         add-path-github "$Z3_ROOT/bin"
         get-z3 "$Z3_ROOT" "$RUNNER_OS" "$Z3_VERSION" &
     fi
-    if [ -z "$CVC4_VERSION" ]; then
+    if [ -n "$CVC4_VERSION" ]; then
         CVC4_ROOT=$(mktemp -d)
         export CVC4_ROOT
         add-path-github "$CVC4_ROOT/bin"
         get-cvc4 "$CVC4_ROOT" "$RUNNER_OS" "$CVC4_VERSION" &
     fi
-    if [ -z "$YICES_VERSION" ]; then
+    if [ -n "$YICES_VERSION" ]; then
         YICES_ROOT=$(mktemp -d)
         export YICES_ROOT
         add-path-github "$YICES_ROOT/bin"
