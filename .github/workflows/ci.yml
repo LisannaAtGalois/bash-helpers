@@ -19,12 +19,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       Z3_VERSION: "4.8.8"
-      CVC4_VERSION: "4.1.8"
+      CVC4_VERSION: "1.8"
       YICES_VERSION: "2.6.2"
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-      - uses: mxschmitt/action-tmate@v3
       - shell: bash
         run: |
           set -Eeuo pipefail

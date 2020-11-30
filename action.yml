@@ -1,7 +1,8 @@
 runs:
   using: "composite"
   steps:
-    - run: |
+    - shell: bash
+      run: |
         set -x
         echo '${{ github.action_path }}'
         if [[ $RUNNER_OS == "Windows" ]]; then
@@ -13,4 +14,3 @@ runs:
         fi
         echo "$BASH_HELPERS"
         echo "BASH_HELPERS=$BASH_HELPERS" >> $GITHUB_ENV
-      shell: bash
