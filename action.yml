@@ -2,12 +2,18 @@ runs:
   using: "composite"
   steps:
     - run: |
+        set -x
         echo '${{ github.action_path }}'
-        echo '${{ github.action_path }}' >> $GITHUB_PATH
+        ap=$(cygpath -u '${{ github.action_path }}')
+        echo "$ap"
+        BASH_HELPERS="$ap/helpers.sh"
+        echo "$BASH_HELPERS"
+        echo "BASH_HELPERS=$BASH_HELPERS" >> $GITHUB_ENV
       shell: bash
-      if: runner.os != 'Windows'
-    - run: |
-        echo "${{ github.action_path }}"
-        echo "${{ github.action_path }}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      shell: pwsh
-      if: runner.os == 'Windows'
+    #   if: runner.os != 'Windows'
+    # - run: |
+    #     echo "${{ github.action_path }}"
+    #     mv "${{ github.action_path }}\helpers.sh" ~\helpers.sh
+    #     echo "BASH_HELPERS=~/helpers.sh" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+    #   shell: pwsh
+    #   if: runner.os == 'Windows'

@@ -24,11 +24,13 @@ jobs:
       YICES_VERSION: "2.6.2"
     steps:
       - uses: actions/checkout@v2
-      - uses: mxschmitt/action-tmate@v3
+      # - uses: mxschmitt/action-tmate@v3
+      - uses: ./
       - shell: bash
         run: |
           set -Eeuo pipefail
-          source ./helpers.sh
+          echo "$BASH_HELPERS"
+          source "$BASH_HELPERS"
           setup-solvers-github
           echo $PATH
           z3 --version || true
