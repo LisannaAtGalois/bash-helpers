@@ -8,8 +8,9 @@ on:
       - master
 
 jobs:
-  setup-solvers-github:
+  setup-solvers:
     strategy:
+      fail-fast: false
       matrix:
         os:
           - windows-2019
@@ -17,7 +18,6 @@ jobs:
           - ubuntu-18.04
           - macos-11.0
           - macos-10.15
-      fail-fast: false
     runs-on: ${{ matrix.os }}
     env:
       Z3_VERSION: "4.8.8"
@@ -26,21 +26,53 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-      - shell: bash
+      - name: Setup and test solvers
+        shell: bash
         run: |
+          set -Eeuo pipefail
           source "$BASH_HELPERS"
-          setup-solvers-github
-          z3 --version | grep -q $Z3_VERSION
-          cvc4 --version | grep -q $CVC4_VERSION
-          yices --version | grep -q $YICES_VERSION
-          yices-sat --version | grep -q $YICES_VERSION
-          yices-smt --version | grep -q $YICES_VERSION
-          yices-smt2 --version | grep -q $YICES_VERSION
-      - shell: bash
+          setup-solvers
+          "$Z3_ROOT/bin/z3" --version | grep -q $Z3_VERSION
+          "$CVC4_ROOT/bin/cvc4" --version | grep -q $CVC4_VERSION
+          "$YICES_ROOT/bin/yices" --version | grep -q $YICES_VERSION
+
+  github-setup-solvers:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-2019
+          - ubuntu-20.04
+          - ubuntu-18.04
+          - macos-11.0
+          - macos-10.15
+    runs-on: ${{ matrix.os }}
+    env:
+      Z3_VERSION: "4.8.8"
+      CVC4_VERSION: "1.8"
+      YICES_VERSION: "2.6.2"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+      - name: Setup and test solvers
+        shell: bash
         run: |
+          set -Eeuo pipefail
+          source "$BASH_HELPERS"
+          github-setup-solvers
+          "$Z3_ROOT/bin/z3" --version | grep -q $Z3_VERSION
+          "$CVC4_ROOT/bin/cvc4" --version | grep -q $CVC4_VERSION
+          "$YICES_ROOT/bin/yices" --version | grep -q $YICES_VERSION
           z3 --version | grep -q $Z3_VERSION
           cvc4 --version | grep -q $CVC4_VERSION
           yices --version | grep -q $YICES_VERSION
-          yices-sat --version | grep -q $YICES_VERSION
-          yices-smt --version | grep -q $YICES_VERSION
-          yices-smt2 --version | grep -q $YICES_VERSION
+      - name: Check solver usability from later step
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          "$Z3_ROOT/bin/z3" --version | grep -q $Z3_VERSION
+          "$CVC4_ROOT/bin/cvc4" --version | grep -q $CVC4_VERSION
+          "$YICES_ROOT/bin/yices" --version | grep -q $YICES_VERSION
+          z3 --version | grep -q $Z3_VERSION
+          cvc4 --version | grep -q $CVC4_VERSION
+          yices --version | grep -q $YICES_VERSION
