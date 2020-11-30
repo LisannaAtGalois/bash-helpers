@@ -95,15 +95,15 @@ setup-solvers() {
 
     if [ -n "$Z3_VERSION" ]; then
         Z3_ROOT="$SOLVERS_DIR/z3"
-        [ ! -d "$Z3_ROOT" ] || get-z3 "$Z3_ROOT" "$RUNNER_OS" "$Z3_VERSION" &
+        [ -d "$Z3_ROOT" ] || get-z3 "$Z3_ROOT" "$RUNNER_OS" "$Z3_VERSION" &
     fi
     if [ -n "$CVC4_VERSION" ]; then
         CVC4_ROOT="$SOLVERS_DIR/cvc4"
-        [ ! -d "$CVC4_ROOT" ] || get-cvc4 "$CVC4_ROOT" "$RUNNER_OS" "$CVC4_VERSION" &
+        [ -d "$CVC4_ROOT" ] || get-cvc4 "$CVC4_ROOT" "$RUNNER_OS" "$CVC4_VERSION" &
     fi
     if [ -n "$YICES_VERSION" ]; then
         YICES_ROOT="$SOLVERS_DIR/yices"
-        [ ! -d "$YICES_ROOT" ] || get-yices "$YICES_ROOT" "$RUNNER_OS" "$YICES_VERSION" &
+        [ -d "$YICES_ROOT" ] || get-yices "$YICES_ROOT" "$RUNNER_OS" "$YICES_VERSION" &
     fi
     wait
 
