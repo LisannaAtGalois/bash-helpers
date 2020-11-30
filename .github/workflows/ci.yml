@@ -13,10 +13,9 @@ jobs:
       matrix:
         os:
           - windows-2019
-          - ubuntu-20.04
           - ubuntu-18.04
-          - macos-11.0
           - macos-10.15
+      fail-fast: false
     runs-on: ${{ matrix.os }}
     env:
       Z3_VERSION: "4.8.8"
