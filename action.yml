@@ -3,14 +3,11 @@ runs:
   steps:
     - shell: bash
       run: |
-        set -x
-        echo '${{ github.action_path }}'
+        set -Eeuo pipefail
         if [[ $RUNNER_OS == "Windows" ]]; then
             ap=$(cygpath -u '${{ github.action_path }}')
-            echo "$ap"
-            BASH_HELPERS="$ap/helpers.sh"
         else
-            BASH_HELPERS="${{ github.action_path }}/helpers.sh"
+            ap='${{ github.action_path }}'
         fi
-        echo "$BASH_HELPERS"
-        echo "BASH_HELPERS=$BASH_HELPERS" >> $GITHUB_ENV
+        BASH_HELPERS="$ap/helpers.sh"
+        echo "BASH_HELPERS=$BASH_HELPERS" >> "$GITHUB_ENV"

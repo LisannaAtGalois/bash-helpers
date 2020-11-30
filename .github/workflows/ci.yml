@@ -8,12 +8,14 @@ on:
       - master
 
 jobs:
-  solvers-native:
+  setup-solvers-github:
     strategy:
       matrix:
         os:
-          # - windows-2019
-          # - ubuntu-18.04
+          - windows-2019
+          - ubuntu-20.04
+          - ubuntu-18.04
+          - macos-11.0
           - macos-10.15
       fail-fast: false
     runs-on: ${{ matrix.os }}
@@ -26,24 +28,18 @@ jobs:
       - uses: ./
       - shell: bash
         run: |
-          set -Eeuo pipefail
-          set -x
-          echo "$BASH_HELPERS"
           source "$BASH_HELPERS"
           setup-solvers-github
-          echo $PATH
-          z3 --version || true
-          cvc4 --version || true
+          z3 --version | grep -q $Z3_VERSION
+          cvc4 --version | grep -q $CVC4_VERSION
           yices --version | grep -q $YICES_VERSION
           yices-sat --version | grep -q $YICES_VERSION
           yices-smt --version | grep -q $YICES_VERSION
           yices-smt2 --version | grep -q $YICES_VERSION
       - shell: bash
         run: |
-          echo $PATH
-          z3 --version || true
-          cvc4 --version || true
-          yices --version || true
+          z3 --version | grep -q $Z3_VERSION
+          cvc4 --version | grep -q $CVC4_VERSION
           yices --version | grep -q $YICES_VERSION
           yices-sat --version | grep -q $YICES_VERSION
           yices-smt --version | grep -q $YICES_VERSION
