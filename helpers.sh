@@ -67,7 +67,7 @@ get-cvc4() { (
     esac
     mkdir -p "$out/bin"
     curl -o "$out/bin/cvc4$EXT" -L "https://github.com/CVC4/CVC4/releases/download/$version/cvc4-$version-$file" >&2
-    [ -z "$EXT" ] && chmod +x "$out/bin/cvc4"
+    [ -n "$EXT" ] || chmod +x "$out/bin/cvc4"
 ) }
 
 get-yices() { (
