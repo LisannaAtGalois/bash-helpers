@@ -17,7 +17,7 @@ fetch-zip() {
     tmp=$(mktemp -d)
     curl -o "$tmp/file.zip" -L "$url" >&2
     unzip "$tmp/file.zip" -d "$tmp/unpacked" >&2
-    if [[ $(ls -A1 "$tmp/unpacked" | wc -l) == 1 ]]; then
+    if [[ $(ls -A1 "$tmp/unpacked" | wc -l | awk '{print $1}') == 1 ]]; then
         mv "$tmp/unpacked/$(ls -A1 $tmp/unpacked)" "$out"
     else
         mv "$tmp/unpacked" "$out"
