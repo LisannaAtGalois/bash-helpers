@@ -33,9 +33,6 @@ jobs:
           set -Eeuo pipefail
           source "$BASH_HELPERS"
           github-setup-solvers
-          "$Z3_ROOT/bin/z3" --version | grep -q $Z3_VERSION
-          "$CVC4_ROOT/bin/cvc4" --version | grep -q $CVC4_VERSION
-          "$YICES_ROOT/bin/yices" --version | grep -q $YICES_VERSION
           z3 --version | grep -q $Z3_VERSION
           cvc4 --version | grep -q $CVC4_VERSION
           yices --version | grep -q $YICES_VERSION
@@ -43,10 +40,6 @@ jobs:
       - name: Check solver usability from later step
         shell: bash
         run: |
-          set -Eeuo pipefail
-          "$Z3_ROOT/bin/z3" --version | grep -q $Z3_VERSION
-          "$CVC4_ROOT/bin/cvc4" --version | grep -q $CVC4_VERSION
-          "$YICES_ROOT/bin/yices" --version | grep -q $YICES_VERSION
           z3 --version | grep -q $Z3_VERSION
           cvc4 --version | grep -q $CVC4_VERSION
           yices --version | grep -q $YICES_VERSION
