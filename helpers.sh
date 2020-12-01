@@ -86,11 +86,23 @@ get-yices() {
     fi
 }
 
-setup-solvers() {
-    # Input
+github-setup-yasm-pkgmgr-latest() {
+    case "$RUNNER_OS" in
+      Linux) sudo apt-get update -q && sudo apt-get install -y yasm ;;
+      macOS) brew install yasm ;;
+      Windows) choco install yasm ;;
+    esac
+}
+
+github-setup-solvers() {
     Z3_VERSION=${Z3_VERSION:-""}
     CVC4_VERSION=${CVC4_VERSION:-""}
     YICES_VERSION=${YICES_VERSION:-""}
+    YASM_VERSION=${YASM_VERSION:-""}
+    if [ -n "$YASM_VERSION" ] && [[ "$YASM_VERSION" != pkgmgr-latest ]]; then
+        echo "error: only YASM_VERSION=pkgmgr-latest is supported for setting up YASM" >&2
+        return 1
+    fi
     SOLVERS_DIR=${SOLVERS_DIR:-$(mktemp -d)}
 
     if [ -n "$Z3_VERSION" ]; then
@@ -105,33 +117,18 @@ setup-solvers() {
         YICES_ROOT="$SOLVERS_DIR/yices"
         [ -d "$YICES_ROOT" ] || get-yices "$YICES_ROOT" "$RUNNER_OS" "$YICES_VERSION" &
     fi
+    if [ -n "$YASM_VERSION" ]; then
+        github-setup-yasm-pkgmgr-latest &
+    fi
     wait
+    [ -n "$Z3_VERSION" ] && github-add-path "$Z3_ROOT/bin"
+    [ -n "$CVC4_VERSION" ] && github-add-path "$CVC4_ROOT/bin"
+    [ -n "$YICES_VERSION" ] && github-add-path "$YICES_ROOT/bin"
 
-    # Check that all requested solvers are usable or fail
-    [ -z "$Z3_VERSION" ] || "$Z3_ROOT/bin/z3" --version >/dev/null 2>&1 || return 1
-    [ -z "$CVC4_VERSION" ] || "$CVC4_ROOT/bin/cvc4" --version >/dev/null 2>&1 || return 1
-    [ -z "$YICES_VERSION" ] || "$YICES_ROOT/bin/yices" --version >/dev/null 2>&1 || return 1
-
-    # Output
-    [ -n "$Z3_VERSION" ] && export Z3_ROOT
-    [ -n "$CVC4_VERSION" ] && export CVC4_ROOT
-    [ -n "$YICES_VERSION" ] && export YICES_ROOT
-}
-
-github-setup-solvers() {
-    setup-solvers || return 1
-    if [ -n "$Z3_ROOT" ]; then
-        github-add-path "$Z3_ROOT/bin"
-        github-set-env Z3_ROOT "$Z3_ROOT"
-    fi
-    if [ -n "$CVC4_ROOT" ]; then
-        github-add-path "$CVC4_ROOT/bin"
-        github-set-env CVC4_ROOT "$CVC4_ROOT"
-    fi
-    if [ -n "$YICES_ROOT" ]; then
-        github-add-path "$YICES_ROOT/bin"
-        github-set-env YICES_ROOT "$YICES_ROOT"
-    fi
+    [ -z "$Z3_VERSION" ] || z3 --version >/dev/null 2>&1 || return 1
+    [ -z "$CVC4_VERSION" ] || cvc4 --version >/dev/null 2>&1 || return 1
+    [ -z "$YICES_VERSION" ] || yices --version >/dev/null 2>&1 || return 1
+    [ -z "$YASM_VERSION" ] || yasm --version >/dev/null 2>&1 || return 1
 }
 
 if [ "$#" -gt 0 ]; then
